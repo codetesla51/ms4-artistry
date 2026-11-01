@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MS4 Artistry — Makeup and Content Studio in Ilorin</title>
+  <meta name="description" content="Bridal makeup, occasion glam, and a warm content studio in Tanke, Ilorin. Book a session with MS4 Artistry.">
+  <meta name="theme-color" content="#2B1712">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232B1712'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%23F9F7F3' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+  <style>
+:root{
+  --ink:#2f1e18;--brown:#663627;--cream:#f9f7f3;--card:#fdfcfc;--rose:#fdccca;--pink:#fccdca;
+  --clay:#a06b5b;--terra:#cd8f7c;--warm:#9a6655;--deep:#2b1712;--muted:#6b4a3e;
+  --line:rgba(47,30,24,.18);--line-l:rgba(249,247,243,.18);
+  --g:clamp(1.25rem,4vw,4.5rem);--sec:clamp(5rem,10vw,9rem);
+  --fd:"Fraunces",Georgia,"Times New Roman",serif;
+  --fb:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1rem}
+body{margin:0;background:var(--cream);color:var(--ink);font:400 1rem/1.55 var(--fb);-webkit-font-smoothing:antialiased;overflow-x:clip}
+::selection{background:var(--rose);color:var(--ink)}
+img,video,canvas{display:block;max-width:100%}
+.icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
+.icon{width:1.15em;height:1.15em;display:inline-block;flex:none;fill:currentColor;vertical-align:-.15em}
+.paint-trail{position:fixed;inset:0;z-index:75;width:100%;height:100%;pointer-events:none}
+.brush-cursor{position:fixed;left:0;top:0;z-index:90;width:52px;height:52px;pointer-events:none;opacity:0;will-change:transform;transition:opacity .2s}
+.brush-cursor svg{width:100%;height:100%;overflow:visible;fill:currentColor;stroke:var(--cream);stroke-width:10;paint-order:stroke fill;transform-origin:36% 81%;transition:transform .18s var(--ease),color .18s,stroke .18s}
+.brush-cursor.is-visible{opacity:1}
+.brush-cursor.is-link{color:var(--rose)}
+.brush-cursor.is-link svg{transform:rotate(-18deg) scale(1.12);stroke:var(--ink)}
+.brush-cursor.is-text{color:var(--terra)}
+.brush-cursor.is-text svg{transform:rotate(8deg) scale(1.2);stroke:var(--ink)}
+.brush-cursor.is-down svg{transform:rotate(-6deg) scale(.86)}
+html.brush-ready,html.brush-ready body,html.brush-ready a,html.brush-ready button,html.brush-ready [role="button"]{cursor:none}
+html.brush-ready video,html.brush-ready input,html.brush-ready textarea,html.brush-ready select{cursor:auto}
+@media (pointer:coarse),(prefers-reduced-motion:reduce){.paint-trail,.brush-cursor{display:none}}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+.hero :focus-visible,.studio :focus-visible,.footer :focus-visible{outline-color:var(--rose)}
+.skip-link{position:fixed;top:.75rem;left:.75rem;z-index:100;transform:translateY(-200%);background:var(--cream);color:var(--ink);padding:.8rem 1rem;font-size:.9rem}
+.skip-link:focus{transform:none}
+.wrap{width:min(calc(100% - var(--g)*2),1400px);margin-inline:auto}
+.display{margin:0;font-family:var(--fd);font-weight:400;font-size:clamp(2.6rem,5.2vw,5.4rem);line-height:.96;letter-spacing:-.045em;font-variation-settings:"opsz" 144}
+
+/* Header */
+.site-header{position:absolute;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:1rem;padding:max(1.25rem,env(safe-area-inset-top)) var(--g) 1.25rem;color:var(--cream)}
+.wordmark{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;text-decoration:none;font:500 1.25rem var(--fd);letter-spacing:-.02em}
+.wordmark span{font:400 .95rem var(--fb);letter-spacing:0}
+.site-nav{display:flex;gap:clamp(1rem,2vw,2rem);margin:0 clamp(1rem,3vw,3rem) 0 auto}
+.site-nav a,.header-book{display:inline-flex;align-items:center;min-height:44px;font-size:.88rem;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.header-book{border-bottom-color:rgba(249,247,243,.4)}
+.site-nav a:hover,.header-book:hover{color:var(--rose);border-color:var(--rose)}
+.mobile-menu{display:none;position:relative}
+.mobile-menu summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;min-height:44px;font-size:.88rem;color:var(--cream)}
+.mobile-menu summary::-webkit-details-marker{display:none}
+.mobile-menu summary:focus-visible{outline:1px solid var(--rose);outline-offset:3px;border-radius:4px}
+.mobile-menu summary::after{content:"";width:6px;height:6px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg);transition:transform .2s}
+.mobile-menu[open] summary::after{transform:rotate(-135deg)}
+.mobile-menu nav{position:absolute;right:0;top:calc(100% + .5rem);z-index:30;display:grid;gap:.15rem;min-width:12rem;padding:.6rem;background:var(--deep);border:1px solid var(--line-l);border-radius:1rem}
+.mobile-menu nav a{display:flex;align-items:center;min-height:44px;padding:0 .85rem;border-radius:.6rem;font-size:.95rem;color:var(--cream);text-decoration:none}
+.mobile-menu nav a:hover{background:rgba(249,247,243,.08)}
+
+/* Hero */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:7.5rem var(--g) clamp(2.5rem,6vh,4.5rem);background:var(--deep);color:var(--cream)}
+.hero-copy{position:relative;z-index:2;max-width:min(50rem,58vw)}
+.hero-kicker{margin:0 0 1.5rem;font-size:.95rem;color:rgba(249,247,243,.68)}
+.hero h1{margin:0 0 1.75rem;font:400 clamp(3.2rem,7vw,6.4rem)/.9 var(--fd);letter-spacing:-.05em;font-variation-settings:"opsz" 144}
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.2em;margin-bottom:-.1em}
+.hero h1 .line>span{display:block;transform:translateY(120%);animation:rise 1.1s var(--ease) var(--d) forwards}
+.line-soft{color:var(--rose);font-style:italic;font-weight:300}
+@keyframes rise{to{transform:none}}
+.rv{opacity:0;transform:translateY(14px);animation:up .9s ease var(--d) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+.hero-lede{max-width:31rem;margin:0 0 2rem;font-size:clamp(1rem,.95rem + .25vw,1.12rem);line-height:1.55;color:rgba(249,247,243,.78)}
+.hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:1.75rem}
+.hero-place{margin:2.5rem 0 0;font-size:.8rem;color:rgba(249,247,243,.55)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:.85rem 1.5rem;border:1px solid transparent;border-radius:999px;font:500 .9rem/1 var(--fb);text-decoration:none;cursor:pointer;transition:background-color .2s,color .2s}
+.btn-light{background:var(--cream);color:var(--ink)}
+.btn-light:hover{background:var(--rose)}
+.btn-dark{background:var(--ink);color:var(--cream)}
+.btn-dark:hover{background:var(--brown)}
+.text-link{display:inline-flex;align-items:center;min-height:44px;color:var(--cream);font-size:.9rem;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.35em;transition:color .2s}
+.text-link:hover{color:var(--rose)}
+
+/* Media placeholders: an arched panel in a solid brand tone.
+   When the real file loads it covers the placeholder; if it is missing, .is-missing hides it. */
+.media{position:relative;display:block;width:100%;aspect-ratio:4/5;overflow:hidden;margin:0;border-radius:999px 999px 0 0;background:var(--clay);color:var(--cream)}
+.media::before{content:"";position:absolute;inset:7% 13% 0;border:1px solid rgba(249,247,243,.4);border-bottom:0;border-radius:999px 999px 0 0}
+.media::after{content:attr(data-label);position:absolute;left:0;right:0;bottom:1.1rem;padding:0 1.5rem;text-align:center;font:italic 300 .95rem/1.3 var(--fd)}
+.media img,.media video{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover}
+.media.is-missing img,.media.is-missing video{visibility:hidden}
+.tone-deep{background:var(--deep)}.tone-clay{background:var(--clay)}.tone-terra{background:var(--terra);color:var(--ink)}
+.tone-terra::before{border-color:rgba(47,30,24,.35)}
+.tone-warm{background:var(--warm)}.tone-brown{background:var(--brown)}
+.media-video{aspect-ratio:4/5;max-height:80vh}
+.media-video video{background:var(--deep)}
+/* data-label on figures is mirrored by JS onto the media block; this covers the video figure itself */
+.media-video::after{bottom:4.5rem}
+.is-loaded::after,.is-loaded::before{display:none}
+
+/* About */
+.about{padding:var(--sec) 0}
+.about-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(3rem,7vw,8rem);align-items:center}
+.about-copy .display{max-width:12ch}
+.about-copy p{margin:0 0 1.25rem;color:var(--muted)}
+.about-copy .display+.lede{margin-top:2rem}
+.about-copy .lede{font-size:clamp(1.05rem,1rem + .35vw,1.25rem);line-height:1.6;color:var(--ink)}
+.facts{margin:2.5rem 0 0}
+.facts div{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;padding:1rem 0;border-top:1px solid var(--line)}
+.facts div:last-child{border-bottom:1px solid var(--line)}
+.facts dt{padding-top:.15rem;font-size:.8rem;color:var(--clay)}
+.facts dd{margin:0;font-size:.95rem}
+.about-media{position:relative;padding-bottom:3rem}
+.about-media .media-video{width:74%;margin-left:auto}
+.video-meta{width:74%;margin:.8rem 0 0 auto;text-align:right;font-size:.78rem;color:var(--clay)}
+.about-still{position:absolute;left:0;bottom:0;width:44%;margin:0;padding:.5rem;background:var(--cream)}
+.about-still figcaption{padding-top:.7rem;font:italic 400 .9rem var(--fd);color:var(--muted)}
+
+/* Services */
+.services{padding:0 0 var(--sec)}
+.services-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(3rem,7vw,8rem);align-items:start}
+.services-intro{position:sticky;top:2rem}
+.services-intro .display{max-width:7ch}
+.services-intro p{max-width:26rem;margin:1.25rem 0 0;color:var(--muted)}
+.services-image{width:min(100%,340px);margin:2.5rem 0 0}
+.services-image figcaption,.gallery figcaption{margin-top:.7rem;font:italic 400 .9rem var(--fd);color:var(--muted)}
+.service-list{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--line)}
+.service-list li{border-top:1px solid var(--line)}
+.service{display:block;margin-inline:-.75rem;padding:clamp(1.4rem,3vw,2.4rem) .75rem;text-decoration:none;transition:background-color .2s}
+.service:hover{background:var(--rose)}
+.service-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.service h3{margin:0;font:400 clamp(1.8rem,3.2vw,3rem)/1.02 var(--fd);letter-spacing:-.035em}
+.service .meta{font-size:.8rem;color:var(--brown);white-space:nowrap}
+.service p{max-width:34rem;margin:.65rem 0 0;font-size:.95rem;color:var(--muted)}
+.service:hover p{color:var(--ink)}
+
+/* Studio */
+.studio{padding:var(--sec) 0;background:var(--deep);color:var(--cream)}
+.studio-head,.work-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2rem,6vw,6rem);align-items:end;margin-bottom:clamp(2.5rem,5vw,4rem)}
+.studio-head .display{max-width:8ch}
+.studio-head p{max-width:30rem;margin:0 0 .4rem;color:rgba(249,247,243,.7)}
+.studio-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.pricing-card{padding:clamp(1.5rem,3vw,2.5rem);background:var(--cream);color:var(--ink);border-radius:999px 999px 0 0;padding-top:clamp(5rem,12vw,9rem)}
+.pricing-card h3{margin:0 0 1.25rem;font:italic 400 1.3rem var(--fd);text-align:center;color:var(--brown)}
+.rate{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:1.05rem 0;border-top:1px solid var(--line)}
+.rate:last-of-type{border-bottom:1px solid var(--line)}
+.rate span{font-size:.9rem;color:var(--muted)}
+.rate strong{font:400 clamp(1.5rem,2.6vw,2.2rem) var(--fd);letter-spacing:-.03em;color:var(--brown);white-space:nowrap}
+.rates-note{margin:1rem 0 2rem;font-size:.78rem;color:var(--muted)}
+.pricing-card .btn{width:100%}
+.rules h3{margin:0 0 1.25rem;font:400 clamp(1.8rem,2.8vw,2.5rem) var(--fd);letter-spacing:-.03em}
+.rules ol{list-style:none;counter-reset:r;margin:0;padding:0}
+.rules li{counter-increment:r;display:grid;grid-template-columns:2.25rem 1fr;gap:.75rem;padding:1rem 0;border-top:1px solid var(--line-l);font-size:.92rem;color:rgba(249,247,243,.78)}
+.rules li:last-child{border-bottom:1px solid var(--line-l)}
+.rules li::before{content:counter(r);font:italic 400 1.05rem/1.3 var(--fd);color:var(--rose)}
+
+/* Work */
+.work{padding:var(--sec) 0}
+.work-head .display{max-width:9ch}
+.work-head p{max-width:30rem;margin:0 0 1.5rem;color:var(--muted)}
+.work-link{display:inline-flex;align-items:center;min-height:44px;font:400 clamp(1.8rem,3.6vw,3.2rem)/1 var(--fd);letter-spacing:-.04em;color:var(--brown);text-decoration:none;border-bottom:1px solid var(--brown);transition:color .2s,border-color .2s}
+.work-link:hover{color:var(--terra);border-color:var(--terra)}
+.work .work-note{margin:1rem 0 0;font-size:.82rem;color:var(--clay)}
+.gallery{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:clamp(1rem,2vw,1.75rem);align-items:start}
+.gallery figure{margin:0}
+.gallery a{display:block;text-decoration:none}
+.gallery-b{margin-top:clamp(2rem,6vw,6rem)}
+.gallery-c{margin-top:clamp(1rem,3vw,3rem)}
+.gallery img{transition:transform .7s var(--ease)}
+.gallery a:hover img{transform:scale(1.03)}
+
+/* Booking */
+.booking{padding:var(--sec) 0;background:var(--terra)}
+.booking-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2.5rem,7vw,7rem);align-items:start}
+.booking .display{max-width:9ch}
+.booking-copy>p{max-width:30rem;margin:1.5rem 0 0}
+.phone{display:inline-flex;align-items:center;min-height:44px;margin:2rem 0 1rem;font:400 clamp(1.9rem,3.6vw,3.2rem)/1 var(--fd);letter-spacing:-.035em;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.phone:hover{border-color:var(--ink)}
+.booking-links{display:flex;flex-wrap:wrap;gap:1.75rem}
+.booking-links a{display:inline-flex;align-items:center;gap:.45rem;min-height:44px;font-size:.9rem;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.35em}
+.booking-links .icon{width:1.1rem;height:1.1rem}
+.booking-copy .booking-place{margin:2rem 0 0;font-size:.85rem;color:rgba(47,30,24,.75)}
+.booking-side{display:flex;flex-direction:column;align-items:flex-start;gap:1.5rem}
+.booking-side-kicker{margin:0;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(47,30,24,.7)}
+.booking-side .booking-quote{max-width:14ch;margin:0;font:italic 300 clamp(1.8rem,3vw,2.8rem)/1.1 var(--fd);letter-spacing:-.03em;color:var(--brown)}
+.booking-side-note{max-width:24rem;margin:0;font-size:.85rem;color:rgba(47,30,24,.75)}
+
+/* Footer */
+.footer{position:relative;padding:clamp(3.5rem,8vw,7rem) 0 6rem;background:var(--deep);color:rgba(249,247,243,.66);font-size:.9rem;overflow:hidden}
+.footer-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem;align-items:end;padding-bottom:clamp(2rem,5vw,4rem);border-bottom:1px solid var(--line-l)}
+.footer-eyebrow{margin:0 0 1.25rem;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(249,247,243,.55)}
+.footer-wordmark{display:inline-block;font:400 clamp(3.4rem,10vw,9.5rem)/.8 var(--fd);letter-spacing:-.065em;color:var(--cream);text-decoration:none}
+.footer-wordmark span{display:block;margin-top:.15em;font:italic 300 .4em/1 var(--fd);letter-spacing:-.03em;color:var(--rose)}
+.footer-monogram{margin:0;font:300 clamp(8rem,22vw,20rem)/.6 var(--fd);letter-spacing:-.1em;color:var(--rose);text-align:right;user-select:none}
+.footer-main{display:grid;grid-template-columns:1.2fr .7fr .8fr;gap:clamp(2rem,5vw,5rem);padding:clamp(2rem,5vw,4rem) 0;border-bottom:1px solid var(--line-l)}
+.footer-kicker{margin:0 0 1rem;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(249,247,243,.45)}
+.footer-cta{display:flex;flex-direction:column;align-items:flex-start;gap:.8rem}
+.footer-phone{display:inline-flex;align-items:center;min-height:44px;font:400 clamp(1.7rem,3.2vw,3rem)/1 var(--fd);letter-spacing:-.04em;color:var(--cream);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.footer-phone:hover{color:var(--rose);border-color:var(--rose)}
+.footer-wa{display:inline-flex;align-items:center;gap:.55rem;min-height:44px;font-size:.9rem;color:var(--rose);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.footer-wa:hover{color:var(--cream);border-color:var(--cream)}
+.footer-nav,.footer-social{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem}
+.footer-nav a,.footer-social a{display:inline-flex;align-items:center;gap:.55rem;min-height:44px;font-size:clamp(1rem,1.2vw,1.15rem);color:rgba(249,247,243,.72);text-decoration:none;transition:color .2s}
+.footer-nav a:hover,.footer-social a:hover{color:var(--rose)}
+.footer-social .icon{width:1.35rem;height:1.35rem}
+.footer-bottom{display:flex;flex-wrap:wrap;align-items:center;gap:0 1.5rem;padding-top:1.5rem;font-size:.8rem;color:rgba(249,247,243,.45)}
+.footer-bottom span{margin-right:auto}
+.footer-bottom span+span{margin-right:0}
+.footer-bottom a{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;color:inherit;text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:var(--rose)}
+.footer-bottom .icon{width:1rem;height:1rem}
+
+/* Sticky WhatsApp */
+.wa-float{position:fixed;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));z-index:80;display:inline-flex;align-items:center;gap:.6rem;min-height:56px;padding:.55rem .55rem .55rem 1rem;border:1px solid rgba(249,247,243,.25);border-radius:999px;background:var(--deep);color:var(--cream);text-decoration:none;transition:background-color .2s,color .2s,border-color .2s,transform .2s}
+.wa-float .icon{width:1.6rem;height:1.6rem}
+.wa-float span{font:500 .82rem/1 var(--fb);white-space:nowrap}
+.wa-float:hover{background:var(--rose);color:var(--ink);border-color:var(--rose);transform:translateY(-2px)}
+.wa-float:focus-visible{outline-color:var(--rose)}
+.wa-float::after{content:"";position:absolute;inset:-5px;border:1px solid rgba(253,204,202,.38);border-radius:999px;pointer-events:none;animation:waPulse 3.2s ease-out infinite}
+@keyframes waPulse{0%{transform:scale(.94);opacity:0}22%{opacity:.8}70%{transform:scale(1.12);opacity:0}100%{opacity:0}}
+
+/* Reveals (added by JS only) */
+.will-reveal{clip-path:inset(0 0 100% 0);transition:clip-path 1.1s var(--ease)}
+.will-reveal.is-visible{clip-path:inset(0)}
+
+/* v2 overrides: hero, tour player, rates */
+.hero{padding-bottom:clamp(1.25rem,3vh,2rem)}
+.hero-copy{max-width:min(60rem,64vw)}
+.hero h1{font-size:clamp(3.4rem,7.2vw,6.5rem);line-height:.88}
+.hero-lede{max-width:28rem}
+.hero-strip{position:relative;z-index:2;list-style:none;display:flex;flex-wrap:wrap;gap:0 2.25rem;margin:clamp(2rem,5vh,3.5rem) 0 0;padding:0;border-top:1px solid var(--line-l)}
+.hero-strip li{padding:1rem 0 .25rem;font-size:.85rem;color:rgba(249,247,243,.7)}
+.hero-strip .place{margin-left:auto;font:italic 300 1rem var(--fd);color:var(--rose)}
+.about-media{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:1.25rem;align-items:end;padding:0}
+.tour{margin:0}
+.tour-frame{padding:.55rem;border:1px solid var(--terra);border-radius:999px 999px 0 0}
+.tour .media-video{width:100%;margin:0;max-height:none;aspect-ratio:4/5}
+.media-video video{object-fit:cover;background:var(--deep)}
+.media-video::before{inset:auto;left:50%;top:46%;width:0;height:0;transform:translate(-50%,-50%);border:.9rem solid transparent;border-left:1.5rem solid var(--rose);border-right:0;border-radius:0}
+.media-video::after{bottom:1.25rem}
+.tour figcaption{display:flex;justify-content:space-between;gap:1rem;padding-top:.7rem;border-top:1px solid var(--line);margin-top:.9rem;font:italic 400 .95rem var(--fd);color:var(--muted)}
+.about-still{position:static;width:100%;padding:0;background:none}
+.studio-grid{grid-template-columns:1fr;gap:clamp(3rem,6vw,5rem)}
+.pricing-card{padding:0;background:none;color:var(--cream);border-radius:0}
+.pricing-card h3{margin:0 0 1.5rem;font:400 clamp(1.8rem,2.8vw,2.5rem) var(--fd);letter-spacing:-.03em;text-align:left;color:var(--cream)}
+.rates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.75rem,2vw,1.75rem)}
+.rate{flex-direction:column;justify-content:center;align-items:center;gap:.6rem;aspect-ratio:4/5;padding:3rem 1rem 1.5rem;border:0;border-radius:999px 999px 0 0;text-align:center}
+.rate:last-of-type{border:0}
+.r1{background:var(--cream)}.r2{background:var(--rose)}.r3{background:var(--terra)}
+.rate span{font:italic 400 1rem var(--fd);color:var(--ink)}
+.rate strong{font-size:clamp(1.8rem,3.4vw,3.2rem);color:var(--ink)}
+.rates-note{margin:1.25rem 0 1.5rem;color:rgba(249,247,243,.65)}
+.pricing-card .btn{width:auto}
+.rules ol{columns:2;column-gap:clamp(2rem,5vw,5rem)}
+.rules li{break-inside:avoid}
+/* v3 hero: copy and image */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);grid-template-areas:"copy media" "strip strip";align-items:end;column-gap:clamp(2rem,5vw,6rem)}
+.hero-copy{grid-area:copy;max-width:none}
+.hero-media{grid-area:media;margin:0;justify-self:end;width:min(100%,calc(68svh*.8))}
+.hero-media .media{aspect-ratio:4/5}
+.hero-media .media img{object-position:center top}
+.hero-strip{grid-area:strip}
+/* v4 blend, paint cursor, motion */
+.hero-media{position:relative;z-index:0}
+.hero-media::before{content:"";position:absolute;z-index:0;right:-16%;top:-7%;width:64%;aspect-ratio:1;border-radius:50%;background:var(--rose)}
+.hero-media::after{content:"";position:absolute;z-index:0;inset:-3% -5% 0;border:1px solid var(--terra);border-bottom:0;border-radius:999px 999px 0 0}
+.hero-media .media{position:relative;z-index:1}
+.marquee{overflow:hidden;background:var(--rose);color:var(--brown);padding:1.1rem 0}
+.marquee-track{display:flex;width:max-content;animation:marq 40s linear infinite}
+.marquee span{padding-right:3.5rem;font:italic 300 clamp(2rem,5vw,4.5rem)/1.1 var(--fd);letter-spacing:-.03em;white-space:nowrap}
+@keyframes marq{to{transform:translateX(-50%)}}
+.progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--rose);transform:scaleX(0);transform-origin:left;z-index:60}
+.anim{opacity:0;transform:translateY(26px);transition:opacity .9s ease calc(var(--i,0)*90ms),transform 1s var(--ease) calc(var(--i,0)*90ms)}
+.anim.in{opacity:1;transform:none}
+.anim-clip{clip-path:inset(0 0 110% 0);transform:translateY(.4em);transition:clip-path 1.1s var(--ease),transform 1.1s var(--ease)}
+.anim-clip.in{clip-path:inset(-8% -5% -14% -5%);transform:none}
+/* Responsive */
+@media(max-width:1100px){
+  .hero-copy{max-width:62vw}
+}
+@media(max-width:900px){
+  .about-grid,.services-grid,.studio-head,.studio-grid,.work-head,.booking-grid{grid-template-columns:1fr}
+  .about-copy .display,.studio-head .display,.work-head .display,.booking .display,.services-intro .display{max-width:14ch}
+  .about-media{width:100%;max-width:560px;margin-inline:auto}
+  .services-intro{position:static}
+  .gallery{grid-template-columns:1fr 1fr}
+  .gallery-a{grid-column:1/-1;max-width:70%}
+  .gallery-b,.gallery-c{margin-top:0}
+  .rules ol{columns:1}
+  .footer-main{grid-template-columns:1fr 1fr}
+  .footer-cta{grid-column:1/-1}
+}
+@media(max-width:760px){
+  .site-nav{display:none}
+  .site-header{padding:max(.75rem,env(safe-area-inset-top)) var(--g) .75rem}
+  .mobile-menu{display:block;margin-left:auto}
+  .header-book{margin-left:0}
+  .hero{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;min-height:100svh;padding:0 0 1.5rem}
+  .hero-copy{max-width:none;padding:6rem var(--g) 1.5rem}
+  .hero-kicker{margin-bottom:1rem;font-size:.88rem}
+  .hero h1{margin-bottom:1.25rem;font-size:clamp(2.7rem,12vw,4.2rem)}
+  .hero-lede{margin-bottom:1.5rem;font-size:.98rem}
+  .hero-strip{display:none}
+  .hero-media{order:2;width:min(calc(100% - var(--g)*2),320px);margin:0 var(--g) 0 auto}
+  .about-media{grid-template-columns:1fr;padding-bottom:0}
+  .about-still{width:62%;margin:0 0 0 auto}
+  .services-image{width:min(100%,300px);margin-top:1.5rem}
+  .service-head{flex-direction:column;gap:.35rem}
+  .service .meta{white-space:normal}
+  .gallery{grid-template-columns:1fr;gap:1.75rem}
+  .gallery-a{max-width:none}
+  .rates{grid-auto-flow:column;grid-auto-columns:min(78vw,280px);grid-template-columns:none;max-width:none;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:.5rem}
+  .rates::-webkit-scrollbar{display:none}
+  .rate{aspect-ratio:4/5;scroll-snap-align:start}
+  .pricing-card .btn{width:100%}
+  .booking-side .btn{width:100%}
+  .footer{padding-bottom:7rem}
+  .footer-top{grid-template-columns:1fr}
+  .footer-monogram{font-size:clamp(7rem,30vw,12rem);text-align:left;margin-top:1rem}
+  .footer-main{grid-template-columns:1fr}
+  .footer-bottom span{width:100%;margin:0}
+  .footer-bottom span+span{margin:0}
+  .wa-float{width:56px;height:56px;padding:0;justify-content:center;gap:0}
+  .wa-float span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
+@media(max-width:420px){
+  .hero-actions{gap:.25rem 1.25rem}
+  .hero-actions .btn{width:100%}
+  .facts div{grid-template-columns:6.5rem 1fr}
+  .rate strong{font-size:1.6rem}
+}
+@media(max-width:350px){
+  .site-header{gap:.5rem}
+  .wordmark span{display:none}
+  .header-book,.mobile-menu summary{font-size:.8rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .marquee-track{animation:none}
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.001ms!important}
+  .rv,.hero h1 .line>span{opacity:1;transform:none;animation:none}
+  .will-reveal{clip-path:none;transition:none}
+  .wa-float::after{display:none;animation:none}
+}
+
+</style>
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-instagram" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 256 256"><path d="M224,72a48.05,48.05,0,0,1-48-48,8,8,0,0,0-8-8H128a8,8,0,0,0-8,8V156a20,20,0,1,1-28.57-18.08A8,8,0,0,0,96,130.69V88a8,8,0,0,0-9.4-7.88C50.91,86.48,24,119.1,24,156a76,76,0,0,0,152,0V116.29A103.25,103.25,0,0,0,224,128a8,8,0,0,0,8-8V80A8,8,0,0,0,224,72Zm-8,39.64a87.19,87.19,0,0,1-43.33-16.15A8,8,0,0,0,160,102v54a60,60,0,0,1-120,0c0-25.9,16.64-49.13,40-57.6v27.67A36,36,0,1,0,136,156V32h24.5A64.14,64.14,0,0,0,216,87.5Z"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 256 256"><path d="M187.58,144.84l-32-16a8,8,0,0,0-8,.5l-14.69,9.8a40.55,40.55,0,0,1-16-16l9.8-14.69a8,8,0,0,0,.5-8l-16-32A8,8,0,0,0,104,64a40,40,0,0,0-40,40,88.1,88.1,0,0,0,88,88,40,40,0,0,0,40-40A8,8,0,0,0,187.58,144.84ZM152,176a72.08,72.08,0,0,1-72-72A24,24,0,0,1,99.29,80.46l11.48,23L101,118a8,8,0,0,0-.73,7.51,56.47,56.47,0,0,0,30.15,30.15A8,8,0,0,0,138,155l14.61-9.74,23,11.48A24,24,0,0,1,152,176ZM128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 256 256"><path d="M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></symbol>
+    <symbol id="i-brush" viewBox="0 0 256 256"><path d="M232,32a8,8,0,0,0-8-8c-44.08,0-89.31,49.71-114.43,82.63A60,60,0,0,0,32,164c0,30.88-19.54,44.73-20.47,45.37A8,8,0,0,0,16,224H92a60,60,0,0,0,57.37-77.57C182.3,121.31,232,76.08,232,32ZM92,208H34.63C41.38,198.41,48,183.92,48,164a44,44,0,1,1,44,44Zm32.42-94.45q5.14-6.66,10.09-12.55A76.23,76.23,0,0,1,155,121.49q-5.9,4.94-12.55,10.09A60.54,60.54,0,0,0,124.42,113.55Zm42.7-2.68a92.57,92.57,0,0,0-22-22c31.78-34.53,55.75-45,69.9-47.91C212.17,55.12,201.65,79.09,167.12,110.87Z"/></symbol>
+  </svg>
+
+  <canvas class="paint-trail" id="paint" aria-hidden="true"></canvas>
+  <div class="brush-cursor" id="brush" aria-hidden="true">
+    <svg viewBox="0 0 256 256"><use href="#i-brush"></use></svg>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="MS4 Artistry, back to top">MS4 <span>Artistry</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#about">The studio</a>
+      <a href="#services">Services</a>
+      <a href="#studio">Rates</a>
+    </nav>
+    <details class="mobile-menu">
+      <summary>Menu</summary>
+      <nav aria-label="Mobile">
+        <a href="#about">The studio</a>
+        <a href="#services">Services</a>
+        <a href="#studio">Rates</a>
+        <a href="#work">Work</a>
+        <a href="#book">Book a session</a>
+      </nav>
+    </details>
+    <a class="header-book" href="#book">Book a session</a>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+
+      <figure class="hero-media rv" style="--d:.5s">
+        <div class="media tone-warm">
+          <img src="assets/hero-pink-hd.png" srcset="assets/hero-pink-640.png 640w, assets/hero-pink-hd.png 1122w" sizes="(max-width: 760px) 320px, (max-width: 1100px) 42vw, 520px" alt="MS4 Artistry bridal look in a pink turban and dress" width="1122" height="1998" fetchpriority="high" decoding="async">
+        </div>
+      </figure>
+
+      <div class="hero-copy">
+        <p class="hero-kicker rv" style="--d:.35s">Makeup artistry and a content studio in Ilorin.</p>
+        <h1>
+          <span class="line"><span style="--d:.18s">Where beauty</span></span>
+          <span class="line line-soft"><span style="--d:.3s">meets creativity.</span></span>
+        </h1>
+        <p class="hero-lede rv" style="--d:.55s">Bridal makeup, occasion glam, and a warm content studio. Book the look, book the room.</p>
+        <div class="hero-actions rv" style="--d:.7s">
+          <a class="btn btn-light" href="#book">Book a session</a>
+          <a class="text-link" href="#about">See the studio</a>
+        </div>
+        
+      </div>
+
+      <ul class="hero-strip rv" style="--d:1s"><li>Bridal makeup</li><li>Occasion glam</li><li>Nationwide travel</li><li>Studio content space</li><li class="place">Tanke, Ilorin, Kwara State</li></ul>
+    </section>
+
+    <!-- MEDIA: every .media block is a placeholder until the real file exists at its path.
+         Drop the file into assets/ with the same name and the placeholder hides itself. -->
+
+    <section class="about" id="about">
+      <div class="wrap about-grid">
+        <div class="about-copy">
+          <h2 class="display">Beauty work, and the room to make it.</h2>
+          <p class="lede">MS4 Artistry is a makeup artistry and content studio in Tanke, Ilorin. We do bridal and occasion looks, travel for bookings nationwide, and rent out a styled room for creators.</p>
+          <p>One place for the face and the frame.</p>
+          <dl class="facts">
+            <div><dt>Based in</dt><dd>Tanke, Ilorin, Kwara State</dd></div>
+            <div><dt>Makeup</dt><dd>Bridal, occasion, travel</dd></div>
+            <div><dt>Studio</dt><dd>Content space by the hour</dd></div>
+          </dl>
+        </div>
+
+        <div class="about-media">
+          <figure class="tour" data-reveal>
+            <div class="tour-frame">
+              <div class="media media-video tone-deep" data-label="Studio tour, 54 seconds">
+                <video src="assets/studio-tour.mp4" poster="assets/studio-tour-poster.jpg" controls playsinline preload="metadata" aria-label="The full MS4 Artistry studio tour"></video>
+              </div>
+            </div>
+            <figcaption><span>The full studio tour</span><span>0:54</span></figcaption>
+          </figure>
+          <figure class="about-still" data-reveal>
+            <div class="media tone-terra" data-label="Portrait at the vanity">
+              <img src="assets/portrait-vanity.jpg" alt="MS4 Artistry at the studio vanity" width="800" height="1000" loading="lazy" decoding="async">
+            </div>
+            <figcaption>The vanity, set for a session.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="wrap services-grid">
+        <div class="services-intro">
+          <h2 class="display">What we do</h2>
+          <p>Makeup for the day, a room for the content. Choose the service, then send the details.</p>
+          <figure class="services-image" data-reveal>
+            <div class="media tone-warm" data-label="Portrait in blue under pendant lights">
+              <img src="assets/portrait-blue.jpg" alt="MS4 Artistry in a blue suit under the studio pendant lights" width="800" height="1000" loading="lazy" decoding="async">
+            </div>
+            <figcaption>Occasion glam, studio light.</figcaption>
+          </figure>
+        </div>
+
+        <ul class="service-list">
+          <li><a class="service" href="#book">
+            <div class="service-head"><h3>Bridal makeup</h3><span class="meta">Traditional and white</span></div>
+            <p>Traditional and white wedding looks, built to last through the day.</p>
+          </a></li>
+          <li><a class="service" href="#book">
+            <div class="service-head"><h3>Occasion glam</h3><span class="meta">By appointment</span></div>
+            <p>Birthdays, graduations, events, and casual face beats.</p>
+          </a></li>
+          <li><a class="service" href="#book">
+            <div class="service-head"><h3>Travel bookings</h3><span class="meta">Nationwide</span></div>
+            <p>The artist travels nationwide for client bookings.</p>
+          </a></li>
+          <li><a class="service" href="#book">
+            <div class="service-head"><h3>Studio content space</h3><span class="meta">From ₦35,000</span></div>
+            <p>A warm, styled room for photos and content, booked by the hour.</p>
+          </a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="studio" id="studio">
+      <div class="wrap">
+        <div class="studio-head">
+          <h2 class="display">The content space</h2>
+          <p>Warm walls, soft light, and room to move. The studio is set up for photos, reels, and content days.</p>
+        </div>
+
+        <div class="studio-grid">
+          <div class="pricing-card">
+            <h3>Content creation</h3>
+            <div class="rates">
+              <div class="rate r1"><span>1 hour session</span><strong>₦35,000</strong></div>
+              <div class="rate r2"><span>2 hour session</span><strong>₦65,000</strong></div>
+              <div class="rate r3"><span>Pre-wedding shoot, per hour</span><strong>₦40,000</strong></div>
+            </div>
+            <p class="rates-note">Prices in naira. Bookings are confirmed on WhatsApp.</p>
+            <a class="btn btn-light" href="#book">Book the studio</a>
+          </div>
+
+          <div class="rules">
+            <h3>Studio rules</h3>
+            <ol>
+              <li>All bookings must be made at least 3 hours before your session.</li>
+              <li>No refunds after payment. Rescheduling is allowed once.</li>
+              <li>Please arrive on time. Extra time attracts additional charges.</li>
+              <li>Handle all studio items with care. Any damage attracts a fee.</li>
+              <li>No food or drinks inside shooting areas, except when used for content.</li>
+              <li>You may play music or bring props. Keep the space clean and calm.</li>
+              <li>Kindly tag @MS4_Artistry when you post any content made in our space.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <div class="wrap">
+        <div class="work-head">
+          <h2 class="display">Inside the studio</h2>
+          <div>
+            <p>Arched walls, warm wood, and a vanity made for getting ready. The latest work lives on Instagram.</p>
+            <a class="work-link" href="https://instagram.com/ms4_artistry" target="_blank" rel="noreferrer">@Ms4_Artistry</a>
+            <p class="work-note">Follow for new looks and studio availability.</p>
+          </div>
+        </div>
+
+        <div class="gallery">
+          <figure class="gallery-a" data-reveal>
+            <a href="https://instagram.com/ms4_artistry" target="_blank" rel="noreferrer" aria-label="See more of the studio on Instagram">
+              <span class="media tone-clay" data-label="Arched wall and boucle sofa">
+                <img src="assets/gallery-lounge.jpg" alt="Arched wall panels, pendant lights, and a boucle sofa in the MS4 studio" width="720" height="1280" loading="lazy" decoding="async">
+              </span>
+            </a>
+            <figcaption>The arched wall.</figcaption>
+          </figure>
+          <figure class="gallery-b" data-reveal>
+            <a href="https://instagram.com/ms4_artistry" target="_blank" rel="noreferrer" aria-label="See more of the studio on Instagram">
+              <span class="media tone-terra" data-label="Fluted arch and wavy lamp">
+                <img src="assets/gallery-arch.jpg" alt="The fluted arch wall and wavy floor lamp in the MS4 studio" width="720" height="1280" loading="lazy" decoding="async">
+              </span>
+            </a>
+            <figcaption>The fluted arch.</figcaption>
+          </figure>
+          <figure class="gallery-c" data-reveal>
+            <a href="https://instagram.com/ms4_artistry" target="_blank" rel="noreferrer" aria-label="See more of the studio on Instagram">
+              <span class="media tone-brown" data-label="Vanity and mirror">
+                <img src="assets/gallery-vanity.jpg" alt="The vanity, mirrors, and yellow sofa in the MS4 studio" width="720" height="1280" loading="lazy" decoding="async">
+              </span>
+            </a>
+            <figcaption>The vanity.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Where beauty meets creativity.</span><span>Where beauty meets creativity.</span><span>Where beauty meets creativity.</span><span>Where beauty meets creativity.</span><span>Where beauty meets creativity.</span><span>Where beauty meets creativity.</span></div></div>
+
+    <section class="booking" id="book">
+      <div class="wrap booking-grid">
+        <div class="booking-copy">
+          <h2 class="display">Book the chair or the room.</h2>
+          <p>Tell us what you need and when. We'll confirm the details on WhatsApp.</p>
+          <a class="phone" href="tel:+2349067248395">+234 906 724 8395</a>
+          <div class="booking-links">
+            <a href="https://instagram.com/ms4_artistry" target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-instagram"></use></svg>Instagram</a>
+            <a href="https://tiktok.com/@ms4_artistry" target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-tiktok"></use></svg>TikTok</a>
+          </div>
+          <p class="booking-place">Tanke, Ilorin, Kwara State</p>
+        </div>
+
+        <div class="booking-side">
+          <p class="booking-side-kicker">Book directly</p>
+          <p class="booking-quote">Where beauty meets creativity.</p>
+          <a class="btn btn-dark" href="https://wa.me/2349067248395?text=Hi%20MS4%20Artistry%2C%20I%20would%20like%20to%20book%20a%20session." target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>Message on WhatsApp</a>
+          <p class="booking-side-note">Tell us the service, date, and time. We'll confirm availability and payment details.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <p class="footer-eyebrow">Makeup and content studio — Ilorin</p>
+          <a class="footer-wordmark" href="#top">MS4 <span>Artistry</span></a>
+        </div>
+        <p class="footer-monogram" aria-hidden="true">A</p>
+      </div>
+
+      <div class="footer-main">
+        <div class="footer-cta">
+          <p class="footer-kicker">Bookings</p>
+          <a class="footer-phone" href="tel:+2349067248395">+234 906 724 8395</a>
+          <a class="footer-wa" href="https://wa.me/2349067248395?text=Hi%20MS4%20Artistry%2C%20I%20would%20like%20to%20book%20a%20session." target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>Chat on WhatsApp</a>
+        </div>
+
+        <nav class="footer-nav" aria-label="Footer">
+          <p class="footer-kicker">Explore</p>
+          <a href="#about">The studio</a>
+          <a href="#services">Services</a>
+          <a href="#studio">Rates</a>
+          <a href="#work">Work</a>
+        </nav>
+
+        <div class="footer-social">
+          <p class="footer-kicker">Follow</p>
+          <a href="https://instagram.com/ms4_artistry" target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-instagram"></use></svg>Instagram</a>
+          <a href="https://tiktok.com/@ms4_artistry" target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-tiktok"></use></svg>TikTok</a>
+          <a href="https://wa.me/2349067248395?text=Hi%20MS4%20Artistry%2C%20I%20would%20like%20to%20book%20a%20session." target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 MS4 Artistry</span>
+        <span>Tanke, Ilorin, Kwara State</span>
+        <a href="#top">Back to top <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/2349067248395?text=Hi%20MS4%20Artistry%2C%20I%20would%20like%20to%20book%20a%20session." target="_blank" rel="noreferrer" aria-label="Chat with MS4 Artistry on WhatsApp">
+    <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+    <span>Chat with us</span>
+  </a>
+
+  <script>
+(function () {
+  "use strict";
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Media placeholders ---------- */
+
+  function setupMedia() {
+    $$(".media").forEach(function (box) {
+      var el = $("img, video", box);
+      if (!el) return;
+      function miss() { box.classList.add("is-missing"); }
+      function ok() { box.classList.add("is-loaded"); }
+      if (el.tagName === "IMG") {
+        if (el.complete) { el.naturalWidth ? ok() : miss(); }
+        el.addEventListener("load", ok);
+        el.addEventListener("error", miss);
+      } else {
+        el.addEventListener("error", miss);
+        el.addEventListener("loadeddata", ok);
+        el.addEventListener("loadedmetadata", ok);
+      }
+    });
+  }
+
+  /* ---------- Scroll reveals (media only) ---------- */
+
+  function setupReveals() {
+    var items = $$("[data-reveal]");
+    if (!items.length || reduce || !("IntersectionObserver" in window)) return;
+    items.forEach(function (i) { i.classList.add("will-reveal"); });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add("is-visible");
+        io.unobserve(en.target);
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -8% 0px" });
+    items.forEach(function (i) { io.observe(i); });
+  }
+
+  /* ---------- Page motion: scroll bar, entrances, parallax ---------- */
+
+  function setupMotion() {
+    if (reduce || !("IntersectionObserver" in window)) return;
+    var bar = document.createElement("div");
+    bar.className = "progress";
+    document.body.appendChild(bar);
+
+    var groups = [[".display", "anim-clip"], [".facts div", "anim"], [".service-list li", "anim"], [".rate", "anim"],
+      [".rules li", "anim"], [".booking-copy > *", "anim"], [".booking-side > *", "anim"], [".footer-top", "anim"]];
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
+    groups.forEach(function (g) {
+      $$(g[0]).forEach(function (el) {
+        el.style.setProperty("--i", Array.prototype.indexOf.call(el.parentNode.children, el) % 6);
+        el.classList.add(g[1]);
+        io.observe(el);
+      });
+    });
+
+    var par = [[".hero-media .media", 0.1], [".services-image", -0.05], [".gallery-a", -0.04], [".gallery-b", 0.07], [".gallery-c", 0.03], [".about-still", 0.06]]
+      .map(function (p) { return { el: $(p[0]), k: p[1], o: 0 }; }).filter(function (p) { return p.el; });
+    var busy = false;
+    function tick() {
+      busy = false;
+      var y = window.pageYOffset, max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? y / max : 0) + ")";
+      par.forEach(function (p) {
+        var r = p.el.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > window.innerHeight + 200) return;
+        var c = r.top + r.height / 2 - p.o;
+        p.o = (c - window.innerHeight / 2) * p.k * -1;
+        p.el.style.transform = "translate3d(0," + p.o.toFixed(1) + "px,0)";
+      });
+    }
+    window.addEventListener("scroll", function () { if (!busy) { busy = true; requestAnimationFrame(tick); } }, { passive: true });
+    tick();
+  }
+
+  /* ---------- Paintbrush cursor and paint trail ---------- */
+
+  function setupBrush() {
+    if (reduce || !window.matchMedia("(pointer: fine)").matches) return;
+    var cv = $("#paint"), cursor = $("#brush");
+    if (!cv || !cursor) return;
+    var ctx = cv.getContext("2d");
+    if (!ctx) return;
+
+    var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var last = null, lastFade = 0, visible = false, mode = "default";
+    var lastX = 0, lastY = 0;
+    var TIP_X = 52 * 0.36, TIP_Y = 52 * 0.8125;
+    var palette = {
+      default: { base: "#CD8F7C", light: "#FDCCCA" },
+      link: { base: "#FDCCCA", light: "#F9F7F3" },
+      text: { base: "#A06B5B", light: "#FDCCCA" }
+    };
+
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      last = null;
+    }
+
+    function setMode(next) {
+      if (next === mode) return;
+      mode = next;
+      cursor.classList.toggle("is-link", mode === "link");
+      cursor.classList.toggle("is-text", mode === "text");
+    }
+
+    function modeFor(el) {
+      if (!el || el.nodeType !== 1) return "default";
+      if (el.closest("a,button,[role='button'],.btn,label,summary")) return "link";
+      if (el.closest("h1,h2,h3,.display,[data-brush]")) return "text";
+      return "default";
+    }
+
+    function hide() {
+      visible = false;
+      cursor.classList.remove("is-visible", "is-down");
+      last = null;
+    }
+
+    function move(e) {
+      if (e.pointerType === "touch") return;
+      if (!document.documentElement.classList.contains("brush-ready")) {
+        document.documentElement.classList.add("brush-ready");
+      }
+      var x = e.clientX, y = e.clientY;
+      lastX = x; lastY = y;
+      cursor.style.transform = "translate3d(" + (x - TIP_X) + "px," + (y - TIP_Y) + "px,0)";
+
+      var el = e.target;
+      if (el && el.closest && el.closest("video")) {
+        hide();
+        return;
+      }
+
+      if (!visible) {
+        visible = true;
+        cursor.classList.add("is-visible");
+      }
+      setMode(modeFor(el));
+
+      var now = performance.now();
+      if (last) {
+        var dx = x - last.x, dy = y - last.y, dist = Math.hypot(dx, dy);
+        if (dist > 2.2) {
+          var speed = Math.min(dist / Math.max(now - last.t, 8), 3);
+          var width = (mode === "text" ? 17 : mode === "link" ? 13 : 11) + speed * 3;
+          var c = palette[mode];
+
+          ctx.globalCompositeOperation = "source-over";
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+
+          ctx.globalAlpha = 0.16;
+          ctx.strokeStyle = c.base;
+          ctx.lineWidth = width + 9;
+          ctx.beginPath();
+          ctx.moveTo(last.x, last.y);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+
+          ctx.globalAlpha = 0.38;
+          ctx.strokeStyle = c.base;
+          ctx.lineWidth = Math.max(3, width * 0.55);
+          ctx.beginPath();
+          ctx.moveTo(last.x, last.y);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+
+          ctx.globalAlpha = 0.55;
+          ctx.strokeStyle = c.light;
+          ctx.lineWidth = Math.max(1.5, width * 0.18);
+          ctx.beginPath();
+          ctx.moveTo(last.x, last.y);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+
+          last = { x: x, y: y, t: now };
+        } else {
+          last.t = now;
+        }
+      } else {
+        last = { x: x, y: y, t: now };
+      }
+    }
+
+    function paintDown(e) {
+      if (e.pointerType === "touch") return;
+      cursor.classList.add("is-down");
+      if (!visible) return;
+      var c = palette[mode];
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 0.45;
+      ctx.fillStyle = c.base;
+      ctx.beginPath();
+      ctx.arc(e.clientX, e.clientY, 3.5 + Math.random() * 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    function paintUp() {
+      cursor.classList.remove("is-down");
+    }
+
+    function refreshMode() {
+      if (!visible) return;
+      var el = document.elementFromPoint(lastX, lastY);
+      if (el && el.closest && el.closest("video")) { hide(); return; }
+      setMode(modeFor(el));
+    }
+
+    function frame(now) {
+      requestAnimationFrame(frame);
+      if (document.hidden || now - lastFade < 16) return;
+      lastFade = now;
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.globalAlpha = 0.045;
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("pointerdown", paintDown, { passive: true });
+    window.addEventListener("pointerup", paintUp, { passive: true });
+    window.addEventListener("pointercancel", paintUp, { passive: true });
+    window.addEventListener("blur", hide);
+    window.addEventListener("resize", resize);
+    window.addEventListener("scroll", refreshMode, { passive: true });
+    document.addEventListener("pointerleave", hide);
+    resize();
+    requestAnimationFrame(frame);
+  }
+
+  function setupMobileMenu() {
+    $$(".mobile-menu a").forEach(function (a) {
+      a.addEventListener("click", function () {
+        var menu = a.closest(".mobile-menu");
+        if (menu) menu.open = false;
+      });
+    });
+  }
+
+  setupMedia();
+  setupReveals();
+  setupMotion();
+  setupBrush();
+  setupMobileMenu();
+})();
+
+</script>
+</body>
+</html>
