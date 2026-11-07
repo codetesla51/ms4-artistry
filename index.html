@@ -137,10 +137,15 @@ a{color:inherit}
 /* Services */
 .services{padding:0 0 var(--sec)}
 .services-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(3rem,7vw,8rem);align-items:start}
-.services-intro{position:sticky;top:2rem}
+.services-intro{position:relative;top:auto}
 .services-intro .display{max-width:7ch}
 .services-intro p{max-width:26rem;margin:1.25rem 0 0;color:var(--muted)}
-.services-image{width:min(100%,340px);margin:2.5rem 0 0}
+.services-gallery{width:min(100%,380px);margin:2.5rem 0 0}
+.services-image{width:100%;margin:0}
+.services-thumbs{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+.services-thumbs figure{margin:0}
+.services-thumbs .media{aspect-ratio:4/5}
+.services-gallery .media img{object-position:center top}
 .services-image figcaption,.gallery figcaption{margin-top:.7rem;font:italic 400 .9rem var(--fd);color:var(--muted)}
 .service-list{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--line)}
 .service-list li{border-top:1px solid var(--line)}
@@ -327,7 +332,8 @@ a{color:inherit}
   .hero-media{order:2;width:min(calc(100% - var(--g)*2),320px);margin:0 var(--g) 0 auto}
   .about-media{grid-template-columns:1fr;padding-bottom:0}
   .about-still{width:62%;margin:0 0 0 auto}
-  .services-image{width:min(100%,300px);margin-top:1.5rem}
+  .services-gallery{width:min(100%,340px);margin-top:1.5rem}
+  .services-image{width:100%;margin:0}
   .service-head{flex-direction:column;gap:.35rem}
   .service .meta{white-space:normal}
   .gallery{grid-template-columns:1fr;gap:1.75rem}
@@ -473,12 +479,26 @@ a{color:inherit}
         <div class="services-intro">
           <h2 class="display">What we do</h2>
           <p>Makeup for the day, a room for the content. Choose the service, then send the details.</p>
-          <figure class="services-image" data-reveal>
-            <div class="media tone-warm" data-label="Portrait in blue under pendant lights">
-              <img src="https://codetesla51.github.io/ms4-artistry/assets/portrait-blue.jpg?v=20261107" alt="MS4 Artistry in a blue suit under the studio pendant lights" width="800" height="1000" loading="lazy" decoding="async">
+          <div class="services-gallery" data-reveal>
+            <figure class="services-image">
+              <div class="media tone-warm" data-label="Makeup for the day">
+                <img src="https://codetesla51.github.io/ms4-artistry/assets/makeup-day-1.jpg?v=20261107" alt="MS4 Artistry soft glam makeup with a brown top" width="607" height="1080" decoding="async">
+              </div>
+              <figcaption>Makeup for the day.</figcaption>
+            </figure>
+            <div class="services-thumbs">
+              <figure>
+                <div class="media tone-clay" data-label="Soft glam">
+                  <img src="https://codetesla51.github.io/ms4-artistry/assets/makeup-day-2.jpg?v=20261107" alt="MS4 Artistry pink soft glam makeup with a headscarf" width="607" height="1080" decoding="async">
+                </div>
+              </figure>
+              <figure>
+                <div class="media tone-terra" data-label="Evening glam">
+                  <img src="https://codetesla51.github.io/ms4-artistry/assets/makeup-day-3.jpg?v=20261107" alt="MS4 Artistry evening glam makeup in a red dress" width="607" height="1080" decoding="async">
+                </div>
+              </figure>
             </div>
-            <figcaption>Occasion glam, studio light.</figcaption>
-          </figure>
+          </div>
         </div>
 
         <ul class="service-list">
